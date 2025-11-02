@@ -3,21 +3,56 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import Icon from '@/components/ui/icon';
+import { Button } from '@/components/ui/button';
 import { useSound } from '@/hooks/useSound';
 import SecretCode from '@/components/SecretCode';
 import HiddenMessages from '@/components/HiddenMessages';
 import ScaryEyes from '@/components/ScaryEyes';
+import Settings, { HorrorSettings } from '@/components/Settings';
+import CodeInput from '@/components/CodeInput';
+import Jumpscare from '@/components/Jumpscare';
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState('main');
   const [knockCount, setKnockCount] = useState(0);
   const [showWarning, setShowWarning] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [showJumpscare, setShowJumpscare] = useState(false);
+  const [unlockedCodes, setUnlockedCodes] = useState<string[]>([]);
   const { isPlaying, playGlitchSound, playKnockSound, playAmbientDrone, stopAmbientDrone } = useSound();
+  
+  const [settings, setSettings] = useState<HorrorSettings>(() => {
+    const saved = localStorage.getItem('horrorSettings');
+    return saved ? JSON.parse(saved) : {
+      weakNerves: false,
+      soundEnabled: true,
+      glitchIntensity: 50,
+      scaryEyes: true,
+      hiddenMessages: true,
+      jumpscares: true,
+    };
+  });
 
   useEffect(() => {
-    playAmbientDrone();
+    if (settings.soundEnabled && !settings.weakNerves) {
+      playAmbientDrone();
+    } else {
+      stopAmbientDrone();
+    }
     return () => stopAmbientDrone();
-  }, []);
+  }, [settings.soundEnabled, settings.weakNerves]);
+
+  const handleSettingsChange = (newSettings: HorrorSettings) => {
+    setSettings(newSettings);
+    localStorage.setItem('horrorSettings', JSON.stringify(newSettings));
+  };
+
+  const handleCodeSubmit = (code: string) => {
+    if (!unlockedCodes.includes(code)) {
+      setUnlockedCodes([...unlockedCodes, code]);
+    }
+  };
 
   const handleSectionChange = (section: string) => {
     playGlitchSound();
@@ -25,16 +60,22 @@ export default function Index() {
   };
 
   const handleKnock = () => {
-    playKnockSound();
+    if (settings.soundEnabled && !settings.weakNerves) {
+      playKnockSound();
+    }
     const newCount = knockCount + 1;
     setKnockCount(newCount);
 
     if (newCount === 3) {
-      setShowWarning(true);
-      setTimeout(() => {
-        setShowWarning(false);
-        setKnockCount(0);
-      }, 5000);
+      if (settings.jumpscares && !settings.weakNerves) {
+        setShowJumpscare(true);
+      } else {
+        setShowWarning(true);
+        setTimeout(() => {
+          setShowWarning(false);
+          setKnockCount(0);
+        }, 5000);
+      }
     }
   };
 
@@ -130,10 +171,36 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background scanlines vhs-noise">
-      <SecretCode />
-      <HiddenMessages />
-      <ScaryEyes />
+      {!settings.weakNerves && <SecretCode />}
+      {settings.hiddenMessages && !settings.weakNerves && <HiddenMessages />}
+      {settings.scaryEyes && !settings.weakNerves && <ScaryEyes />}
       <div className="tracking-lines fixed inset-0 opacity-20 pointer-events-none" />
+      
+      {showSettings && (
+        <Settings 
+          onClose={() => setShowSettings(false)} 
+          settings={settings}
+          onSettingsChange={handleSettingsChange}
+        />
+      )}
+      
+      {showCodeInput && (
+        <CodeInput
+          onClose={() => setShowCodeInput(false)}
+          onCodeSubmit={handleCodeSubmit}
+        />
+      )}
+      
+      {showJumpscare && (
+        <Jumpscare onComplete={() => {
+          setShowJumpscare(false);
+          setShowWarning(true);
+          setTimeout(() => {
+            setShowWarning(false);
+            setKnockCount(0);
+          }, 5000);
+        }} />
+      )}
       
       {showWarning && (
         <div className="fixed inset-0 bg-destructive/20 z-50 flex items-center justify-center backdrop-blur-sm animate-fade-in">
@@ -153,12 +220,37 @@ export default function Index() {
       
       <header className="border-b-2 border-primary bg-card/90 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-6">
+          <div className="flex justify-end gap-2 mb-4">
+            <Button
+              onClick={() => setShowCodeInput(true)}
+              variant="outline"
+              size="sm"
+              className="border-primary text-primary hover:bg-primary/20"
+            >
+              <Icon name="Lock" size={16} className="mr-2" />
+              ВВЕСТИ КОД
+            </Button>
+            <Button
+              onClick={() => setShowSettings(true)}
+              variant="outline"
+              size="sm"
+              className="border-primary text-primary hover:bg-primary/20"
+            >
+              <Icon name="Settings" size={16} className="mr-2" />
+              НАСТРОЙКИ
+            </Button>
+          </div>
           <h1 className="text-5xl md:text-7xl horror-title text-primary mb-2 glitch flicker">
             СЕМЕРО КОЗЛЯТ
           </h1>
           <p className="vhs-text text-xl md:text-2xl text-secondary">
             [ЗАПИСЬ №7734 | СЕКРЕТНЫЙ АРХИВ | НЕ ДЛЯ ПУБЛИКАЦИИ]
           </p>
+          {unlockedCodes.length > 0 && (
+            <p className="vhs-text text-center text-sm text-primary mt-2 animate-pulse">
+              [{unlockedCodes.length}/8 КОДОВ РАЗБЛОКИРОВАНО]
+            </p>
+          )}
           
           <nav className="flex flex-wrap gap-2 mt-6">
             {['main', 'characters', 'timeline', 'theories', 'artifacts'].map((section) => (
