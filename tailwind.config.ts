@@ -68,6 +68,10 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			fontFamily: {
+				vhs: ['VT323', 'monospace'],
+				horror: ['Creepster', 'cursive']
+			},
 			keyframes: {
 				'accordion-down': {
 					from: {
@@ -84,11 +88,24 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'glitch': {
+					'0%, 100%': { transform: 'translate(0)' },
+					'20%': { transform: 'translate(-2px, 2px)' },
+					'40%': { transform: 'translate(-2px, -2px)' },
+					'60%': { transform: 'translate(2px, 2px)' },
+					'80%': { transform: 'translate(2px, -2px)' }
+				},
+				'static': {
+					'0%, 100%': { opacity: '0.05' },
+					'50%': { opacity: '0.1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'glitch': 'glitch 2s infinite',
+				'static': 'static 0.5s infinite'
 			}
 		}
 	},
