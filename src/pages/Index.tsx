@@ -1,11 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import Icon from '@/components/ui/icon';
+import { useSound } from '@/hooks/useSound';
+import SecretCode from '@/components/SecretCode';
+import HiddenMessages from '@/components/HiddenMessages';
+import ScaryEyes from '@/components/ScaryEyes';
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState('main');
+  const [knockCount, setKnockCount] = useState(0);
+  const [showWarning, setShowWarning] = useState(false);
+  const { isPlaying, playGlitchSound, playKnockSound, playAmbientDrone, stopAmbientDrone } = useSound();
+
+  useEffect(() => {
+    playAmbientDrone();
+    return () => stopAmbientDrone();
+  }, []);
+
+  const handleSectionChange = (section: string) => {
+    playGlitchSound();
+    setActiveSection(section);
+  };
+
+  const handleKnock = () => {
+    playKnockSound();
+    const newCount = knockCount + 1;
+    setKnockCount(newCount);
+
+    if (newCount === 3) {
+      setShowWarning(true);
+      setTimeout(() => {
+        setShowWarning(false);
+        setKnockCount(0);
+      }, 5000);
+    }
+  };
 
   const characters = [
     {
@@ -99,7 +130,26 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background scanlines vhs-noise">
+      <SecretCode />
+      <HiddenMessages />
+      <ScaryEyes />
       <div className="tracking-lines fixed inset-0 opacity-20 pointer-events-none" />
+      
+      {showWarning && (
+        <div className="fixed inset-0 bg-destructive/20 z-50 flex items-center justify-center backdrop-blur-sm animate-fade-in">
+          <Card className="border-4 border-destructive bg-card/95 p-8 max-w-2xl mx-4 animate-pulse">
+            <div className="text-center">
+              <h2 className="text-5xl horror-title text-destructive mb-4 glitch">ТУК-ТУК-ТУК</h2>
+              <p className="vhs-text text-2xl text-foreground crt-effect">
+                КТО-ТО СТУЧИТСЯ В ДВЕРЬ
+              </p>
+              <p className="vhs-text text-xl text-muted-foreground mt-4 flicker">
+                НЕ ОТКРЫВАЙТЕ
+              </p>
+            </div>
+          </Card>
+        </div>
+      )}
       
       <header className="border-b-2 border-primary bg-card/90 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-6">
@@ -114,7 +164,7 @@ export default function Index() {
             {['main', 'characters', 'timeline', 'theories', 'artifacts'].map((section) => (
               <button
                 key={section}
-                onClick={() => setActiveSection(section)}
+                onClick={() => handleSectionChange(section)}
                 className={`px-4 py-2 border-2 transition-all vhs-text text-lg ${
                   activeSection === section
                     ? 'bg-primary text-primary-foreground border-primary'
@@ -314,13 +364,27 @@ export default function Index() {
       </main>
 
       <footer className="border-t-2 border-primary bg-card/90 backdrop-blur-sm mt-20 py-8">
-        <div className="container mx-auto px-4 text-center">
-          <p className="vhs-text text-xl text-muted-foreground mb-2">
-            [КОНЕЦ ЗАПИСИ]
-          </p>
-          <p className="vhs-text text-lg text-muted-foreground flicker">
-            ЕСЛИ ВЫ СЛЫШИТЕ СТУК В ДВЕРЬ - НЕ ОТКРЫВАЙТЕ
-          </p>
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-6">
+            <p className="vhs-text text-xl text-muted-foreground mb-2">
+              [КОНЕЦ ЗАПИСИ]
+            </p>
+            <button
+              onClick={handleKnock}
+              className="vhs-text text-lg text-muted-foreground flicker hover:text-destructive transition-colors cursor-pointer border-none bg-transparent"
+            >
+              ЕСЛИ ВЫ СЛЫШИТЕ СТУК В ДВЕРЬ - НЕ ОТКРЫВАЙТЕ
+            </button>
+            {knockCount > 0 && knockCount < 3 && (
+              <p className="vhs-text text-sm text-destructive mt-2 animate-pulse">
+                [{knockCount}/3 СТУКА]
+              </p>
+            )}
+          </div>
+          <div className="text-center vhs-text text-sm text-muted-foreground/50">
+            <p>СЕКРЕТНЫЙ КОД: ↑↑↓↓←→←→BA</p>
+            <p className="mt-1">Активировать звук: {isPlaying ? '🔊 ВКЛ' : '🔇 ВЫКЛ'}</p>
+          </div>
         </div>
       </footer>
     </div>
