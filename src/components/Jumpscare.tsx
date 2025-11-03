@@ -48,31 +48,38 @@ export default function Jumpscare({ onComplete }: JumpscareProps) {
 
       {stage === 2 && (
         <div 
-          className="w-full h-full flex items-center justify-center animate-shake"
+          className="w-full h-full flex items-center justify-center animate-shake screen-shake"
           style={{
-            background: 'linear-gradient(45deg, #000000 0%, #ff0000 50%, #000000 100%)',
-            animation: 'shake 0.1s infinite, glitch-anim 0.1s infinite'
+            background: 'linear-gradient(45deg, #000000 0%, #ff0000 25%, #000000 50%, #ff0000 75%, #000000 100%)',
+            backgroundSize: '400% 400%',
+            animation: 'shake 0.08s infinite, glitch-intense 0.1s infinite, color-shift 0.3s infinite'
           }}
         >
           <div className="text-center space-y-8">
-            <div className="text-[25rem] leading-none" style={{ 
-              textShadow: '0 0 50px red, 0 0 100px red',
-              animation: 'pulse 0.1s infinite'
+            <div className="text-[30rem] leading-none glitch-intense" style={{ 
+              textShadow: '0 0 80px red, 0 0 150px red, 10px 10px 0 cyan, -10px -10px 0 yellow',
+              animation: 'pulse 0.05s infinite'
             }}>
               😱
             </div>
             <h1 
-              className="text-9xl font-bold text-white"
+              className="text-[12rem] font-bold text-white horror-title text-glitch-heavy chromatic-aberration"
+              data-text="НЕ НАДО БЫЛО СТУЧАТЬ"
               style={{
-                textShadow: '5px 5px 0 #ff0000, -5px -5px 0 #00ff00',
-                animation: 'glitch-anim 0.1s infinite'
+                textShadow: '8px 8px 0 #ff0000, -8px -8px 0 #00ff00, 0 0 100px #ff0000',
+                animation: 'glitch-intense 0.08s infinite'
               }}
             >
               НЕ НАДО БЫЛО СТУЧАТЬ
             </h1>
-            <p className="text-6xl text-red-500 animate-pulse">
+            <p className="text-8xl text-red-500 vhs-text pulse-glow" style={{
+              animation: 'pulse 0.1s infinite, chromatic-aberration 0.15s infinite'
+            }}>
               ОН УСЛЫШАЛ
             </p>
+            <div className="text-6xl opacity-70 glitch">
+              🚪💀🔪
+            </div>
           </div>
         </div>
       )}

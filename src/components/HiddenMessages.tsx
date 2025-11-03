@@ -8,7 +8,15 @@ const HIDDEN_MESSAGES = [
   'ЭТО НЕ МОЙ ГОЛОС',
   'ЗАКРОЙТЕ ОКНА',
   'ОНИ НАБЛЮДАЮТ СЕЙЧАС',
-  'МАМА?'
+  'МАМА?',
+  'ПОЧЕМУ ТЫ ЗДЕСЬ?',
+  'УЖЕ СЛИШКОМ ПОЗДНО',
+  'Я ЗНАЮ ГДЕ ТЫ',
+  'НЕ ОБОРАЧИВАЙСЯ',
+  'ТЫ СЛЫШИШЬ ЭТО?',
+  'ОНО ПРИБЛИЖАЕТСЯ',
+  'БЕГИ',
+  'Я ВСЕГДА ЗДЕСЬ'
 ];
 
 export default function HiddenMessages() {
@@ -16,7 +24,7 @@ export default function HiddenMessages() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (Math.random() > 0.7) {
+      if (Math.random() > 0.6) {
         const newMessage = {
           text: HIDDEN_MESSAGES[Math.floor(Math.random() * HIDDEN_MESSAGES.length)],
           x: Math.random() * 80 + 10,
@@ -28,9 +36,9 @@ export default function HiddenMessages() {
 
         setTimeout(() => {
           setMessages(prev => prev.filter(msg => msg.id !== newMessage.id));
-        }, 2000);
+        }, 3000);
       }
-    }, 8000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, []);
@@ -40,11 +48,12 @@ export default function HiddenMessages() {
       {messages.map(msg => (
         <div
           key={msg.id}
-          className="fixed z-50 vhs-text text-destructive text-sm opacity-70 glitch pointer-events-none"
+          className="fixed z-50 vhs-text text-destructive text-lg font-bold opacity-80 glitch chromatic-aberration pointer-events-none"
           style={{
             left: `${msg.x}%`,
             top: `${msg.y}%`,
-            animation: 'fadeIn 0.5s ease-in, fadeOut 0.5s ease-out 1.5s'
+            animation: 'fadeIn 0.5s ease-in, fadeOut 0.5s ease-out 1.5s',
+            textShadow: '0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5)'
           }}
         >
           {msg.text}

@@ -16,7 +16,7 @@ export default function ScaryEyes() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (Math.random() > 0.85) {
+      if (Math.random() > 0.7) {
         setEyePosition({
           x: Math.random() * (window.innerWidth - 100),
           y: Math.random() * (window.innerHeight - 50)
@@ -25,9 +25,9 @@ export default function ScaryEyes() {
 
         setTimeout(() => {
           setShowEyes(false);
-        }, 3000);
+        }, 4000 + Math.random() * 2000);
       }
-    }, 15000);
+    }, 8000);
 
     return () => clearInterval(interval);
   }, []);
@@ -51,29 +51,42 @@ export default function ScaryEyes() {
 
   return (
     <div 
-      className="fixed z-[60] pointer-events-none animate-fade-in"
+      className="fixed z-[60] pointer-events-none animate-fade-in glitch-intense"
       style={{ left: eyePosition.x, top: eyePosition.y }}
     >
       <div className="flex gap-6">
         <div className="relative">
-          <div className="w-12 h-12 bg-destructive/90 rounded-full border-2 border-foreground animate-pulse" />
+          <div className="w-14 h-14 bg-destructive/95 rounded-full border-4 border-foreground animate-pulse pulse-glow shadow-2xl" />
           <div 
-            className="absolute top-1/2 left-1/2 w-5 h-5 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2"
+            className="absolute top-1/2 left-1/2 w-6 h-6 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2"
             style={{
               transform: `translate(calc(-50% + ${leftPupil.x}px), calc(-50% + ${leftPupil.y}px))`
             }}
           />
+          <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-white rounded-full opacity-70" 
+               style={{
+                 transform: `translate(calc(-50% + ${leftPupil.x + 2}px), calc(-50% + ${leftPupil.y - 2}px))`
+               }}
+          />
         </div>
         
         <div className="relative">
-          <div className="w-12 h-12 bg-destructive/90 rounded-full border-2 border-foreground animate-pulse" />
+          <div className="w-14 h-14 bg-destructive/95 rounded-full border-4 border-foreground animate-pulse pulse-glow shadow-2xl" />
           <div 
-            className="absolute top-1/2 left-1/2 w-5 h-5 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2"
+            className="absolute top-1/2 left-1/2 w-6 h-6 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2"
             style={{
               transform: `translate(calc(-50% + ${rightPupil.x}px), calc(-50% + ${rightPupil.y}px))`
             }}
           />
+          <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-white rounded-full opacity-70" 
+               style={{
+                 transform: `translate(calc(-50% + ${rightPupil.x + 2}px), calc(-50% + ${rightPupil.y - 2}px))`
+               }}
+          />
         </div>
+      </div>
+      <div className="mt-2 text-center">
+        <div className="w-20 h-1 bg-foreground/50 mx-auto blur-sm" />
       </div>
     </div>
   );

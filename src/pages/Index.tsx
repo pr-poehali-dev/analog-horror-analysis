@@ -11,6 +11,9 @@ import ScaryEyes from '@/components/ScaryEyes';
 import Settings, { HorrorSettings } from '@/components/Settings';
 import CodeInput from '@/components/CodeInput';
 import Jumpscare from '@/components/Jumpscare';
+import RandomHorrorEvents from '@/components/RandomHorrorEvents';
+import InteractiveHorror from '@/components/InteractiveHorror';
+import AtmosphereEnhancer from '@/components/AtmosphereEnhancer';
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState('main');
@@ -20,7 +23,7 @@ export default function Index() {
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [showJumpscare, setShowJumpscare] = useState(false);
   const [unlockedCodes, setUnlockedCodes] = useState<string[]>([]);
-  const { isPlaying, playGlitchSound, playKnockSound, playAmbientDrone, stopAmbientDrone } = useSound();
+  const { isPlaying, playGlitchSound, playKnockSound, playAmbientDrone, stopAmbientDrone, playWhisper, playScream, playHeartbeat } = useSound();
   
   const [settings, setSettings] = useState<HorrorSettings>(() => {
     const saved = localStorage.getItem('horrorSettings');
@@ -174,6 +177,9 @@ export default function Index() {
       {!settings.weakNerves && <SecretCode />}
       {settings.hiddenMessages && !settings.weakNerves && <HiddenMessages />}
       {settings.scaryEyes && !settings.weakNerves && <ScaryEyes />}
+      <RandomHorrorEvents enabled={!settings.weakNerves} intensity={settings.glitchIntensity} />
+      <InteractiveHorror enabled={!settings.weakNerves} />
+      <AtmosphereEnhancer enabled={!settings.weakNerves} intensity={settings.glitchIntensity} />
       <div className="tracking-lines fixed inset-0 opacity-20 pointer-events-none" />
       
       {showSettings && (
