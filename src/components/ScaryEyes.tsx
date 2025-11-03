@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 
-export default function ScaryEyes() {
+interface ScaryEyesProps {
+  isFlowerMode?: boolean;
+}
+
+export default function ScaryEyes({ isFlowerMode = false }: ScaryEyesProps) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showEyes, setShowEyes] = useState(false);
   const [eyePosition, setEyePosition] = useState({ x: 0, y: 0 });
@@ -48,6 +52,19 @@ export default function ScaryEyes() {
 
   const leftPupil = calculatePupilPosition(eyePosition.x + 20);
   const rightPupil = calculatePupilPosition(eyePosition.x + 60);
+
+  if (isFlowerMode) {
+    return (
+      <div 
+        className="fixed z-[60] pointer-events-none animate-fade-in"
+        style={{ left: eyePosition.x, top: eyePosition.y }}
+      >
+        <div className="text-6xl animate-bounce">
+          🦋
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 
