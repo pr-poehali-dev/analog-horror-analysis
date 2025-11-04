@@ -15,6 +15,11 @@ import RandomHorrorEvents from '@/components/RandomHorrorEvents';
 import InteractiveHorror from '@/components/InteractiveHorror';
 import AtmosphereEnhancer from '@/components/AtmosphereEnhancer';
 import FlowerMode from '@/components/FlowerMode';
+import StaticEffect from '@/components/StaticEffect';
+import Distortion from '@/components/Distortion';
+import ShadowFigure from '@/components/ShadowFigure';
+import ScreenTear from '@/components/ScreenTear';
+import TextCorruption from '@/components/TextCorruption';
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState('main');
@@ -269,6 +274,11 @@ export default function Index() {
       {settings.randomEvents && <RandomHorrorEvents enabled={settings.weakNervesLevel === 'none'} intensity={settings.glitchIntensity} />}
       {settings.atmosphere && <InteractiveHorror enabled={settings.weakNervesLevel === 'none'} />}
       {settings.atmosphere && <AtmosphereEnhancer enabled={!isAnyProtection} intensity={settings.glitchIntensity} />}
+      {settings.weakNervesLevel === 'none' && <StaticEffect />}
+      {settings.weakNervesLevel === 'none' && <Distortion />}
+      {settings.weakNervesLevel === 'none' && <ShadowFigure />}
+      {settings.weakNervesLevel === 'none' && <ScreenTear />}
+      {settings.weakNervesLevel === 'none' && <TextCorruption />}
       {!isFlowerMode && <div className="tracking-lines fixed inset-0 opacity-20 pointer-events-none" />}
       
       {showSettings && (
@@ -328,31 +338,31 @@ export default function Index() {
       )}
       
       <header className={`border-b-2 ${isFlowerMode ? 'border-pink-400 bg-white/90' : 'border-primary bg-card/90'} backdrop-blur-sm sticky top-0 z-50`}>
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-end gap-2 mb-4">
-            <Button
-              onClick={() => setShowCodeInput(true)}
-              variant="outline"
-              size="sm"
-              className={isFlowerMode ? 'border-pink-400 text-pink-600 hover:bg-pink-100' : 'border-primary text-primary hover:bg-primary/20'}
-            >
-              <Icon name="Lock" size={16} className="mr-2" />
-              {isFlowerMode ? 'ОТКРЫТЬ СЕКРЕТ' : 'ВВЕСТИ КОД'}
-            </Button>
-            <Button
-              onClick={() => setShowSettings(true)}
-              variant="outline"
-              size="sm"
-              className={isFlowerMode ? 'border-pink-400 text-pink-600 hover:bg-pink-100' : 'border-primary text-primary hover:bg-primary/20'}
-            >
-              <Icon name="Settings" size={16} className="mr-2" />
-              НАСТРОЙКИ
-            </Button>
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <h1 className={`text-2xl md:text-4xl ${isFlowerMode ? 'font-bold text-pink-600' : 'horror-title text-primary glitch flicker'}`}>
+              {isFlowerMode ? 'ЦВЕТОЧНАЯ ПОЛЯНА' : 'СЕМЕРО КОЗЛЯТ'}
+            </h1>
+            <div className="flex gap-2 flex-shrink-0">
+              <Button
+                onClick={() => setShowCodeInput(true)}
+                variant="outline"
+                size="sm"
+                className={isFlowerMode ? 'border-pink-400 text-pink-600 hover:bg-pink-100' : 'border-primary text-primary hover:bg-primary/20'}
+              >
+                <Icon name="Lock" size={14} />
+              </Button>
+              <Button
+                onClick={() => setShowSettings(true)}
+                variant="outline"
+                size="sm"
+                className={isFlowerMode ? 'border-pink-400 text-pink-600 hover:bg-pink-100' : 'border-primary text-primary hover:bg-primary/20'}
+              >
+                <Icon name="Settings" size={14} />
+              </Button>
+            </div>
           </div>
-          <h1 className={`text-5xl md:text-7xl mb-2 ${isFlowerMode ? 'font-bold text-pink-600' : 'horror-title text-primary glitch flicker'}`}>
-            {isFlowerMode ? 'ЦВЕТОЧНАЯ ПОЛЯНА' : 'СЕМЕРО КОЗЛЯТ'}
-          </h1>
-          <p className={`text-xl md:text-2xl ${isFlowerMode ? 'text-purple-500 font-medium' : 'vhs-text text-secondary'}`}>
+          <p className={`text-sm md:text-base ${isFlowerMode ? 'text-purple-500 font-medium' : 'vhs-text text-secondary'}`}>
             {isFlowerMode ? '[ДНЕВНИК САДОВОДА | КОЛЛЕКЦИЯ ЦВЕТОВ | ДЛЯ ВСЕХ]' : '[ЗАПИСЬ №7734 | СЕКРЕТНЫЙ АРХИВ | НЕ ДЛЯ ПУБЛИКАЦИИ]'}
           </p>
           {unlockedCodes.length > 0 && (

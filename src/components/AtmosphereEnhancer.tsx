@@ -59,7 +59,7 @@ export default function AtmosphereEnhancer({ enabled, intensity }: AtmosphereEnh
       <div 
         className="fixed inset-0 pointer-events-none z-[80]"
         style={{
-          filter: `saturate(${0.7 + (intensity / 200)}) contrast(${1.1 + (intensity / 200)}) brightness(${0.9 - (intensity / 300)})`,
+          filter: `saturate(${0.6 + (intensity / 150)}) contrast(${1.2 + (intensity / 150)}) brightness(${0.85 - (intensity / 250)})`,
           mixBlendMode: 'multiply',
         }}
       />
@@ -67,12 +67,14 @@ export default function AtmosphereEnhancer({ enabled, intensity }: AtmosphereEnh
       <div
         className="fixed inset-0 pointer-events-none z-[75]"
         style={{
-          background: `linear-gradient(transparent ${100 - chromaticLevel}%, rgba(255,0,0,0.05) 100%)`,
+          background: `linear-gradient(transparent ${100 - chromaticLevel}%, rgba(255,0,0,0.08) 100%)`,
         }}
       />
 
-      <div className="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-destructive/30 to-transparent z-[70] pointer-events-none animate-pulse" />
-      <div className="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-destructive/30 to-transparent z-[70] pointer-events-none animate-pulse" />
+      <div className="fixed top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-destructive/40 to-transparent z-[70] pointer-events-none animate-pulse" />
+      <div className="fixed bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-destructive/40 to-transparent z-[70] pointer-events-none animate-pulse" />
+      <div className="fixed top-0 left-0 h-full w-2 bg-gradient-to-b from-transparent via-destructive/40 to-transparent z-[70] pointer-events-none animate-pulse" />
+      <div className="fixed top-0 right-0 h-full w-2 bg-gradient-to-b from-transparent via-destructive/40 to-transparent z-[70] pointer-events-none animate-pulse" />
     </>
   );
 }

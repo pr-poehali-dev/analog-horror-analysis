@@ -15,9 +15,9 @@ export default function InteractiveHorror({ enabled }: InteractiveHorrorProps) {
   const handleMouseMove = (e: React.MouseEvent) => {
     setMousePos({ x: e.clientX, y: e.clientY });
     
-    if (Math.random() < 0.001) {
+    if (Math.random() < 0.0015) {
       setShowHand(true);
-      setTimeout(() => setShowHand(false), 2000);
+      setTimeout(() => setShowHand(false), 1500);
     }
   };
 

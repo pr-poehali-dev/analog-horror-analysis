@@ -249,6 +249,131 @@
     }
   }
 
+  @keyframes distortionShake {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-2px, 2px);
+    }
+    50% {
+      transform: translate(2px, -2px);
+    }
+    75% {
+      transform: translate(-2px, -2px);
+    }
+    100% {
+      transform: translate(2px, 2px);
+    }
+  }
+
+  @keyframes slideFromLeft {
+    0% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.6;
+    }
+    80% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateX(150px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slideFromRight {
+    0% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.6;
+    }
+    80% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateX(-150px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slideFromTop {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.6;
+    }
+    80% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(150px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes screenTearFlash {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(100%);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateX(200%);
+      opacity: 0;
+    }
+  }
+
+  .screen-shake {
+    animation: screenShake 0.5s;
+  }
+
+  @keyframes screenShake {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    10% {
+      transform: translate(-5px, -5px);
+    }
+    20% {
+      transform: translate(5px, 5px);
+    }
+    30% {
+      transform: translate(-5px, 5px);
+    }
+    40% {
+      transform: translate(5px, -5px);
+    }
+    50% {
+      transform: translate(-5px, -5px);
+    }
+    60% {
+      transform: translate(5px, 5px);
+    }
+    70% {
+      transform: translate(-5px, 5px);
+    }
+    80% {
+      transform: translate(5px, -5px);
+    }
+    90% {
+      transform: translate(-5px, -5px);
+    }
+  }
+
   .crt-effect {
     animation: crt 8s infinite;
   }
